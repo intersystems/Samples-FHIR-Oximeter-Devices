@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="IRIS" version="26" zv="IRIS for UNIX (Ubuntu Server LTS for x86-64 Containers) 2020.1 (Build 214U)" ts="2020-03-26 17:49:10">
+<Class name="Demo.FHIRBPL">
+<Description>
+</Description>
+<Super>Ens.BusinessProcessBPL</Super>
+<TimeChanged>65464,64090.657299</TimeChanged>
+<TimeCreated>65461,71646.166321</TimeCreated>
+
+<XData name="BPL">
+<Description>
+BPL Definition</Description>
+<XMLNamespace>http://www.intersystems.com/bpl</XMLNamespace>
+<Data><![CDATA[
+<process language='objectscript' request='HS.FHIRServer.Interop.Request' response='HS.FHIRServer.Interop.Response' height='2000' width='2000' >
+<context>
+<property name='O2Sat' type='%Integer' instantiate='0' />
+<property name='Payload' type='%DynamicObject' instantiate='0' />
+<property name='Schedule' type='HS.FHIR.vSTU3.Model.Resource.Schedule' instantiate='0' />
+</context>
+<sequence xend='200' yend='900' >
+<call name='Call Operation' target='HS.FHIRServer.Interop.Operation' async='0' xpos='200' ypos='250' >
+<request type='HS.FHIRServer.Interop.Request' >
+<assign property="callrequest" value="request" action="set" />
+</request>
+<response type='HS.FHIRServer.Interop.Response' >
+<assign property="response" value="callresponse" action="set" />
+</response>
+</call>
+<code xpos='200' ypos='350' >
+<![CDATA[
+  if ((request.Request.RequestMethod="POST") & (request.Request.RequestPath="Observation")){
+    set stream = ##class(HS.SDA3.QuickStream).%OpenId(request.QuickStreamId)
+    set Json = ##class(%DynamicObject).%FromJSON(stream)
+ }]]]]><![CDATA[>
+</code>
+<if name='Check O2 Levels' condition='context.O2Sat &lt; 90' xpos='200' ypos='450' xend='200' yend='800' >
+<true>
+<transform name='trasform to send' class='Demo.FHIRObosSIUS12' source='context.Payload' target='context.Schedule' xpos='335' ypos='600' />
+<call name='To Scheduling Service' target='To_Scheduling' async='1' xpos='335' ypos='700' >
+<request type='EnsLib.HL7.Message' >
+<assign property="callrequest" value="context.Schedule" action="set" />
+</request>
+<response type='Ens.Response' />
+</call>
+</true>
+</if>
+</sequence>
+</process>
+]]></Data>
+</XData>
+
+<Storage name="Default">
+<Type>%Storage.Persistent</Type>
+</Storage>
+</Class>
+
+
+<Class name="Demo.FHIRObosSIUS12">
+<Super>Ens.DataTransformDTL</Super>
+<TimeChanged>65464,52505.400933</TimeChanged>
+<TimeCreated>65462,66267.203374</TimeCreated>
+<DependsOn>HS.FHIR.vSTU3.Model.Resource.Observation,EnsLib.HL7.Message</DependsOn>
+
+<Parameter name="IGNOREMISSINGSOURCE">
+<Default>1</Default>
+</Parameter>
+
+<Parameter name="REPORTERRORS">
+<Default>1</Default>
+</Parameter>
+
+<Parameter name="TREATEMPTYREPEATINGFIELDASNULL">
+<Default>0</Default>
+</Parameter>
+
+<XData name="DTL">
+<XMLNamespace>http://www.intersystems.com/dtl</XMLNamespace>
+<Data><![CDATA[
+<transform sourceClass='HS.FHIR.vSTU3.Model.Resource.Observation' targetClass='EnsLib.HL7.Message' targetDocType='2.5:SIU_S12' create='new' language='objectscript' >
+<assign value='"MSH|^~\&amp;|EPIC|EPIC|||20160502162033||SIU^S12|538|D|2.3||"' property='target.{MSH}' action='set' />
+<assign value='"SCH|01928374|57483920|||||||1|hr|1^^^20160515133000|||||||||1173^MATTHEWS^JAMES^A|||||BOOKED"' property='target.{SCH}' action='set' />
+<assign value='"RGS|1|A|094"' property='target.{RGSgrp(1).RGS}' action='set' />
+</transform>
+]]></Data>
+</XData>
+</Class>
+
+
+<Project name="EnsExportProduction_2020-03-26 17-48-45_821+0" LastModified="2020-03-26 17:49:10.272889">
+  <ProjectDescription>Studio Project generated from Production 'FHIRNAMESPACEPKG.FoundationProduction' at 2020-03-26 17:48:45.821 UTC</ProjectDescription>
+  <Items>
+    <ProjectItem name="Demo.FHIRBPL" type="CLS"></ProjectItem>
+    <ProjectItem name="Demo.FHIRObosSIUS12" type="CLS"></ProjectItem>
+    <ProjectItem name="FHIRNAMESPACEPKG.FoundationProduction" type="CLS"></ProjectItem>
+    <ProjectItem name="ProductionSettings:FHIRNAMESPACEPKG.FoundationProduction.PTD" type="PTD"></ProjectItem>
+    <ProjectItem name="EnsExportNotes.EnsExportProduction_2020-03-26 17-48-45_821+0.PTD" type="PTD"></ProjectItem>
+  </Items>
+</Project>
+
+
+<Class name="FHIRNAMESPACEPKG.FoundationProduction">
+<ProcedureBlock>0</ProcedureBlock>
+<Super>Ens.Production</Super>
+<TimeChanged>65464,64058.31292</TimeChanged>
+<TimeCreated>65461,71257.30077</TimeCreated>
+
+<XData name="ProductionDefinition">
+<Data><![CDATA[
+<Production Name="FHIRNAMESPACEPKG.FoundationProduction" TestingEnabled="true" LogGeneralTraceEvents="true">
+  <Description></Description>
+  <ActorPoolSize>1</ActorPoolSize>
+  <Item Name="Ens.Activity.Operation.Local" Category="" ClassName="Ens.Activity.Operation.Local" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+  </Item>
+  <Item Name="HS.FHIRServer.Interop.Service" Category="" ClassName="HS.FHIRServer.Interop.Service" PoolSize="0" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="TargetConfigName">Demo.FHIRBPL</Setting>
+  </Item>
+  <Item Name="Demo.FHIRBPL" Category="" ClassName="Demo.FHIRBPL" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="true" Schedule="">
+  </Item>
+  <Item Name="HS.FHIRServer.Interop.Operation" Category="" ClassName="HS.FHIRServer.Interop.Operation" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+  </Item>
+  <Item Name="To_Scheduling" Category="" ClassName="EnsLib.HL7.Operation.HTTPOperation" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Adapter" Name="HTTPServer">localhost</Setting>
+    <Setting Target="Adapter" Name="HTTPPort">9980</Setting>
+    <Setting Target="Adapter" Name="URL">/</Setting>
+  </Item>
+</Production>
+]]></Data>
+</XData>
+</Class>
+
+
+<Document name="EnsExportNotes.EnsExportProduction_2020-03-26 17-48-45_821+0.PTD"><ProjectTextDocument name="EnsExportNotes.EnsExportProduction_2020-03-26 17-48-45_821+0" description="Export Notes for export EnsExportProduction_2020-03-26 17-48-45_821+0">
+<![CDATA[<Deployment>
+<Creation>
+<Machine>FC611BAE1571</Machine>
+<Instance>IRIS</Instance>
+<Namespace>FHIRNAMESPACE</Namespace>
+<SourceProduction>FHIRNAMESPACEPKG.FoundationProduction</SourceProduction>
+<Username>SuperUser</Username>
+<UTC>2020-03-26 17:49:10.271</UTC>
+</Creation>
+<Notes>
+</Notes>
+<Contents>
+<ExportProject>EnsExportProduction_2020-03-26 17-48-45_821+0</ExportProject>
+<Item num="1">Demo.FHIRBPL.CLS</Item>
+<Item num="2">Demo.FHIRObosSIUS12.CLS</Item>
+<Item num="3">FHIRNAMESPACEPKG.FoundationProduction.CLS</Item>
+<Item num="4">ProductionSettings:FHIRNAMESPACEPKG.FoundationProduction.PTD</Item>
+</Contents>
+<ProductionClassInExport>FHIRNAMESPACEPKG.FoundationProduction</ProductionClassInExport>
+</Deployment>
+
+]]></ProjectTextDocument>
+</Document>
+
+<Document name="ProductionSettings:FHIRNAMESPACEPKG.FoundationProduction.PTD"><ProjectTextDocument name="ProductionSettings:FHIRNAMESPACEPKG.FoundationProduction" description="Settings for production FHIRNAMESPACEPKG.FoundationProduction">
+<![CDATA[<Production Name='FHIRNAMESPACEPKG.FoundationProduction' TestingEnabled='true' LogGeneralTraceEvents='true'><Description/><ActorPoolSize>1</ActorPoolSize></Production>
+]]></ProjectTextDocument>
+</Document></Export>
