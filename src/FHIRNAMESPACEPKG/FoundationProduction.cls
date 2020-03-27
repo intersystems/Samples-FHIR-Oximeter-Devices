@@ -3,7 +3,7 @@ Class FHIRNAMESPACEPKG.FoundationProduction Extends Ens.Production [ Not Procedu
 
 XData ProductionDefinition
 {
-<Production Name="FHIRNAMESPACEPKG.FoundationProduction" TestingEnabled="true" LogGeneralTraceEvents="true">
+<Production Name="FHIRNAMESPACEPKG.FoundationProduction" TestingEnabled="true" LogGeneralTraceEvents="true" >
   <Description></Description>
   <ActorPoolSize>1</ActorPoolSize>
   <Item Name="Ens.Activity.Operation.Local" Category="" ClassName="Ens.Activity.Operation.Local" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">

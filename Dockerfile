@@ -11,8 +11,9 @@ USER irisowner
 WORKDIR /opt/app
 
 COPY ./Installer.cls ./
-# COPY ./src ./src/
-# COPY ./iris.key /usr/irissys/mgr/
+COPY ./Setup.cls ./
+COPY ./src ./src/
+
 
 
 
@@ -24,6 +25,8 @@ RUN iris start $ISC_PACKAGE_INSTANCENAME quietly EmergencyId=sys,sys && \
             " // 2**4 = 16; this sets bit 4 to enable OS authentication for the admin user" \
             " Set p(\"AutheEnabled\")=\$zboolean(p(\"AutheEnabled\"),16,7)\n" \
             " Do ##class(Security.System).Modify(,.p)\n" \
+            " Do \$system.OBJ.Load(\"/opt/app/Setup.cls\", \"ck\")\n" \
+            "set sc = ##class(Setup).setUpFHIR()\n"\
             " If 'sc do \$zu(4, \$JOB, 1)\n" \
             " halt" \
     | iris session $ISC_PACKAGE_INSTANCENAME && \

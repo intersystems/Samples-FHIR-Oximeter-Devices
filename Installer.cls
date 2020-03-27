@@ -7,7 +7,7 @@ XData MyInstall [ XMLNamespace = INSTALLER ]
   <Default Name="NAMESPACE" Value="INTEROP"/>
   <Default Name="DBNAME" Value="INTEROP"/>
   <Default Name="APPPATH" Dir="/opt/app/" />
-  <Default Name="SOURCESPATH" Dir="${APPPATH}src" />
+  <Default Name="SOURCESPATH" Dir="${APPPATH}src/USERNAMESPACE" />
   <Default Name="RESOURCE" Value="%DB_${DBNAME}" /> 
 
   <Namespace Name="${NAMESPACE}" Code="${DBNAME}-CODE" Data="${DBNAME}-DATA" Create="yes" Ensemble="1">
@@ -17,7 +17,7 @@ XData MyInstall [ XMLNamespace = INSTALLER ]
     </Configuration>
 
     <Import File="${SOURCESPATH}" Recurse="1"/>
-    <Production Name="Demo.AllJava" AutoStart="1"/>
+    <Production Name="Demo.HL7" AutoStart="1"/>
       
     
   </Namespace>
