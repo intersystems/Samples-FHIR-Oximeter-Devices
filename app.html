@@ -178,6 +178,11 @@
             if (Response.status == 201) {
                 alert("Your FHIR Resource arrived successfully")
             }
+            else {
+                alert("Something went wrong. Reponse Status: " + Response.status)
+            }
+        }).catch((e)=>{
+            alert("Something went wrong: " + e)
         })
     }
 </script>
