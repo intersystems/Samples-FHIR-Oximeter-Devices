@@ -27,6 +27,10 @@ ClassMethod setUpFHIR() As %Status
     set sc = ##class(App.Installer).setup()
     set cspApp = ##class(HS.Util.RESTCSPConfig).URLIndexOpen(appKey)
     set cspApp.ServiceConfigName = "HS.FHIRServer.Interop.Service"
+    set st = cspApp.%Save()
+    if $$$ISERR(st) {
+        write "something went wrong"
+    }
     Do strategy.SaveServiceConfigData(configData)
     return sc
 }
