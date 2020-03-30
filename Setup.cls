@@ -25,6 +25,8 @@ ClassMethod setUpFHIR() As %Status
     do ##class(FHIRNAMESPACEPKG.FoundationProduction).Start()
     Do $system.OBJ.Load("/opt/app/Installer.cls", "ck")
     set sc = ##class(App.Installer).setup()
+    set cspApp = ##class(HS.Util.RESTCSPConfig).URLIndexOpen(appKey)
+    set cspApp.ServiceConfigName = "HS.FHIRServer.Interop.Service"
     Do strategy.SaveServiceConfigData(configData)
     return sc
 }
