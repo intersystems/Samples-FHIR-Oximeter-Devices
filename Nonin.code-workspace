@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"objectscript.conn": {
+			"active": true,
+			"label": "LOCAL",
+			"host": "localhost",
+			"port": 52773,
+			"username": "SuperUser",
+			"ns": "FHIRNAMESPACE",
+			"https": false
+		},
+	}
