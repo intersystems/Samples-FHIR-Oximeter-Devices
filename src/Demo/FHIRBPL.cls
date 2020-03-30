@@ -13,10 +13,9 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 <process language='objectscript' request='HS.FHIRServer.Interop.Request' response='HS.FHIRServer.Interop.Response' height='2000' width='2000' >
 <context>
 <property name='O2Sat' type='%Integer' instantiate='0' />
-<property name='Payload' type='%DynamicObject' instantiate='0' />
-<property name='Schedule' type='HS.FHIR.vSTU3.Model.Resource.Schedule' instantiate='0' />
+<property name='Schedule' type='EnsLib.HL7.Message' instantiate='0' />
 </context>
-<sequence xend='200' yend='1000' >
+<sequence xend='200' yend='900' >
 <call name='Call Operation' target='HS.FHIRServer.Interop.Operation' async='0' xpos='200' ypos='250' >
 <request type='HS.FHIRServer.Interop.Request' >
 <assign property="callrequest" value="request" action="set" />
@@ -25,7 +24,7 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 <assign property="response" value="callresponse" action="set" />
 </response>
 </call>
-<code xpos='200' ypos='350' >
+<code name='Get O2 Data' xpos='200' ypos='350' >
 <![CDATA[
 
   // only read the FHIR data if the Resource is and Observation and the request is a create
@@ -48,14 +47,13 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
    
  }]]>
 </code>
-<if name='Check O2 Levels' condition='context.O2Sat &lt; 90' xpos='200' ypos='550' xend='200' yend='900' >
+<if name='Check O2 Levels' condition='context.O2Sat &lt; 90' xpos='200' ypos='450' xend='200' yend='800' >
 <true>
-<transform name='trasform to send' class='Demo.FHIRObosSIUS12' source='context.Payload' target='context.Schedule' xpos='335' ypos='700' />
-<call name='To Scheduling Service' target='To_Scheduling' async='1' xpos='335' ypos='800' >
+<transform name='Trasform to send' class='Demo.FHIRObosSIUS12' source='context' target='context.Schedule' xpos='335' ypos='600' />
+<call name='To Scheduling Service' target='To_Scheduling' async='1' xpos='335' ypos='700' >
 <request type='EnsLib.HL7.Message' >
 <assign property="callrequest" value="context.Schedule" action="set" />
 </request>
-<response type='Ens.Response' />
 </call>
 </true>
 </if>
