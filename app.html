@@ -1,0 +1,188 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Oximeter Reading Tool</title>
+
+</head>
+<form>
+<h2> Select An O2 Saturation Level</h2>
+
+<label for="points">Points (between 80 and 100): </label>
+<input type="range" id="myRange" name="points" min="80" max="100">
+<br>
+<p>Value <span id="output"></span></p>
+<br>
+<br>
+<br>
+<br>
+<label for="username" > Username: </label>
+<br>
+<input type="text" value="SuperUser" id="username">
+<br>
+<label for="password"> Password: </label>
+<br>
+<input type="password" id="password" value="SYS">
+<br>
+<br>
+<label for="host"> Host: </label>
+<br>
+<input type="text" value="localhost" id="host">
+<br>
+<label for="port" > Port: </label>
+<br>
+<input type="text" value="52773" id="port">
+<br>
+<br>
+<label for="basepath" > Base FHIR Path</label>
+<br>
+<input type="text" value="/csp/healthshare/fhirnamespace/fhir/r4/Observation" id="basepath">
+<br>
+<br>
+<button type="button" id="sendButton" onclick="sendToServer()">Send</button>
+<br>
+
+
+</form>
+  
+</body>
+
+
+<script>
+    var slider = document.getElementById("myRange");
+    var output = document.getElementById("output");
+    output.innerHTML = slider.value; // Display the default slider value
+
+    // Update the current slider value (each time you drag the slider handle)
+    slider.oninput = function() {
+    output.innerHTML = this.value;
+    }
+
+    function sendToServer(){
+
+        var slider = document.getElementById("myRange");
+        var value = parseInt(slider.value)
+        var host = document.getElementById("host").value
+        var port = document.getElementById("port").value
+        var path = document.getElementById("basepath").value
+        var username = document.getElementById("username").value
+        var password = document.getElementById("password").value
+        var a64 = btoa(`${username}:${password}`)
+        var url = `http://${host}:${port}${path}`
+        payload ={
+            "resourceType": "Observation",
+            "meta": {
+                "profile": [
+                "http://hl7.org/fhir/StructureDefinition/vitalsigns"
+                ]
+            },
+            "text": {
+                "status": "generated",
+                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: satO2</p><p><b>meta</b>: </p><p><b>identifier</b>: o1223435-10</p><p><b>partOf</b>: <a>Procedure/ob</a></p><p><b>status</b>: final</p><p><b>category</b>: Vital Signs <span>(Details : {http://terminology.hl7.org/CodeSystem/observation-category code 'vital-signs' = 'Vital Signs', given as 'Vital Signs'})</span></p><p><b>code</b>: Oxygen saturation in Arterial blood <span>(Details : {LOINC code '2708-6' = 'Oxygen saturation in Arterial blood', given as 'Oxygen saturation in Arterial blood'}; {LOINC code '59408-5' = 'Oxygen saturation in Arterial blood by Pulse oximetry', given as 'Oxygen saturation in Arterial blood by Pulse oximetry'}; {urn:iso:std:iso:11073:10101 code '150456' = '150456', given as 'MDC_PULS_OXIM_SAT_O2'})</span></p><p><b>subject</b>: <a>Patient/example</a></p><p><b>effective</b>: 05/12/2014 9:30:10 AM</p><p><b>value</b>: 95 %<span> (Details: UCUM code % = '%')</span></p><p><b>interpretation</b>: Normal (applies to non-numeric results) <span>(Details : {http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation code 'N' = 'Normal', given as 'Normal'})</span></p><p><b>device</b>: <a>DeviceMetric/example</a></p><h3>ReferenceRanges</h3><table><tr><td>-</td><td><b>Low</b></td><td><b>High</b></td></tr><tr><td>*</td><td>90 %<span> (Details: UCUM code % = '%')</span></td><td>99 %<span> (Details: UCUM code % = '%')</span></td></tr></table></div>"
+            },
+            "identifier": [
+                {
+                "system": "http://goodcare.org/observation/id",
+                "value": "o1223435-10"
+                }
+            ],
+            "partOf": [
+                {
+                "reference": "Procedure/ob"
+                }
+            ],
+            "status": "final",
+            "category": [
+                {
+                "coding": [
+                    {
+                    "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                    "code": "vital-signs",
+                    "display": "Vital Signs"
+                    }
+                ],
+                "text": "Vital Signs"
+                }
+            ],
+            "code": {
+                "coding": [
+                {
+                    "system": "http://loinc.org",
+                    "code": "2708-6",
+                    "display": "Oxygen saturation in Arterial blood"
+                },
+                {
+                    "system": "http://loinc.org",
+                    "code": "59408-5",
+                    "display": "Oxygen saturation in Arterial blood by Pulse oximetry"
+                },
+                {
+                    "system": "urn:iso:std:iso:11073:10101",
+                    "code": "150456",
+                    "display": "MDC_PULS_OXIM_SAT_O2"
+                }
+                ]
+            },
+            "subject": {
+                "reference": "Patient/52"
+            },
+            "effectiveDateTime": "2014-12-05T09:30:10+01:00",
+            "valueQuantity": {
+                "value": value,
+                "unit": "%",
+                "system": "http://unitsofmeasure.org",
+                "code": "%"
+            },
+            "interpretation": [
+                {
+                "coding": [
+                    {
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "code": "N",
+                    "display": "Normal"
+                    }
+                ],
+                "text": "Normal (applies to non-numeric results)"
+                }
+            ],
+            "device": {
+                "reference": "DeviceMetric/example"
+            },
+            "referenceRange": [
+                {
+                "low": {
+                    "value": 90,
+                    "unit": "%",
+                    "system": "http://unitsofmeasure.org",
+                    "code": "%"
+                },
+                "high": {
+                    "value": 99,
+                    "unit": "%",
+                    "system": "http://unitsofmeasure.org",
+                    "code": "%"
+                }
+                }
+            ]
+            }
+        
+        fetch(url, {
+            method: "POST",
+            headers:{
+            "Content-Type": "application/fhir+json;charset=utf-8",
+            "Accept":"application/fhir+json",
+            "Authorization" : `Basic ${a64}`
+            },
+            "body": JSON.stringify(payload)
+        }).then((Response)=> {
+            if (Response.status == 201) {
+                alert("Your FHIR Resource arrived successfully")
+            }
+            else {
+                alert("Something went wrong. Reponse Status: " + Response.status)
+            }
+        }).catch((e)=>{
+            alert("Something went wrong: " + e)
+        })
+    }
+</script>
