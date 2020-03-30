@@ -44,7 +44,6 @@ ClassMethod setUpLearningLab() as %Status
     set status = ##class(HS.HC.Util.Installer).InstallFoundation("R4FHIRNamespace")
     set $namespace = "R4FHIRNamespace"
     do $system.OBJ.LoadDir(baseDir_"src/Demo/", "ck")
-    do $system.OBJ.LoadDir(baseDir_"src/FHIRNAMESPACEPKG/", "ck")
     Set tFHIRApp = "/csp/healthshare/r4fhirnamespace/fhir/r4"
     Set tStrategyClass = "HS.FHIRServer.Storage.Json.InteractionsStrategy"
     Set tMetadataConfigKey = "HL7v40"
@@ -59,7 +58,7 @@ ClassMethod setUpLearningLab() as %Status
     Set configData = strategy.GetServiceConfigData() 
     Set configData.DebugMode = 4
     
-    do ##class(FHIRNAMESPACEPKG.FoundationProduction).Start()
+    do ##class(Demo.FoundationProduction).Start()
     set sc = ##class(App.Installer).setup()
     set cspApp = ##class(HS.Util.RESTCSPConfig).URLIndexOpen(appKey)
     set cspApp.ServiceConfigName = "HS.FHIRServer.Interop.Service"
