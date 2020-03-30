@@ -13,6 +13,8 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 <process language='objectscript' request='HS.FHIRServer.Interop.Request' response='HS.FHIRServer.Interop.Response' height='2000' width='2000' >
 <context>
 <property name='O2Sat' type='%Integer' instantiate='0' />
+<property name='Payload' type='%DynamicObject' instantiate='0' />
+<property name='Schedule' type='HS.FHIR.vSTU3.Model.Resource.Schedule' instantiate='0' />
 </context>
 <sequence xend='200' yend='1000' >
 <call name='Call Operation' target='HS.FHIRServer.Interop.Operation' async='0' xpos='200' ypos='250' >
