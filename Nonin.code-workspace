@@ -8,9 +8,9 @@
 		"objectscript.conn": {
 			"active": true,
 			"label": "LOCAL",
-			"host": "localhost",
-			"port": 52773,
-			"username": "SuperUser",
+			"host": "52773-1-d133de08.staging-labs.learning.intersystems.com",
+			"port": 80,
+			"username": "tech",
 			"ns": "FHIRNAMESPACE",
 			"https": false
 		},
