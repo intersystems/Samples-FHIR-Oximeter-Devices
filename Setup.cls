@@ -39,7 +39,7 @@ ClassMethod setUpFHIR() As %Status
 
 ClassMethod setUpLearningLab() as %Status 
 {
-    set baseDir = "/home/project/shared/OximeterExercise/"
+    set baseDir = "/home/project/shared/Samples-FHIR-Oximeter-Devices/"
         zn "HSLIB"
     set status = ##class(HS.HC.Util.Installer).InstallFoundation("R4FHIRNamespace")
     set $namespace = "R4FHIRNamespace"
