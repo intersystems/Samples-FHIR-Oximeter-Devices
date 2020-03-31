@@ -1,4 +1,4 @@
-Class FHIRNAMESPACEPKG.FoundationProduction Extends Ens.Production [ Not ProcedureBlock ]
+Class Demo.FoundationProduction Extends Ens.Production [ Not ProcedureBlock ]
 {
 
 XData ProductionDefinition
