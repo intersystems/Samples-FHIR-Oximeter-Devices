@@ -1,5 +1,5 @@
 /// 
-Class Demo.CallScheduling Extends Ens.Rule.Definition
+Class Solution.CallScheduling Extends Ens.Rule.Definition
 {
 
 Parameter RuleAssistClass = "EnsLib.MsgRouter.RuleAssist";

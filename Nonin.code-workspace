@@ -11,7 +11,7 @@
 			"host": "localhost",
 			"port": 52773,
 			"username": "SuperUser",
-			"ns": "FHIRNAMESPACE",
+			"ns": "R4FHIRNAMESPACE",
 			"https": false
 		},
 	}
