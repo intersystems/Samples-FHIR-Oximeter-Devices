@@ -23,10 +23,8 @@ ClassMethod setUpFHIR() As %Status
     Set configData.DebugMode = 4
     #; set configData.ServiceConfigName = "HS.FHIRServer.Interop.Service"
     do $system.OBJ.LoadDir(baseDir_"src/Demo/", "ck")
-    do $system.OBJ.LoadDir(baseDir_"src/FHIRNAMESPACEPKG/", "ck")
-    do ##class(FHIRNAMESPACEPKG.FoundationProduction).Start()
+    do ##class(Demo.FoundationProduction).Start()
     Do $system.OBJ.Load(baseDir_"Installer.cls", "ck")
-    set sc = ##class(App.Installer).setup()
     set cspApp = ##class(HS.Util.RESTCSPConfig).URLIndexOpen(appKey)
     set cspApp.ServiceConfigName = "HS.FHIRServer.Interop.Service"
     set st = cspApp.%Save()
@@ -34,7 +32,7 @@ ClassMethod setUpFHIR() As %Status
         write "something went wrong"
     }
     Do strategy.SaveServiceConfigData(configData)
-    return sc
+    return st
 }
 
 ClassMethod setUpLearningLab() as %Status 
@@ -66,7 +64,7 @@ ClassMethod setUpLearningLab() as %Status
         write "something went wrong"
     }
     Do strategy.SaveServiceConfigData(configData)
-    return sc
+    return st
 }
 
 }
