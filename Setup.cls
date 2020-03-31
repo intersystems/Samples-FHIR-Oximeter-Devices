@@ -59,7 +59,7 @@ ClassMethod setUpLearningLab() as %Status
     Set configData.DebugMode = 4
     
     do ##class(Demo.FoundationProduction).Start()
-    set cspApp = ##class(HS.Util.RESTCSPConfig).URLIndexOpen(appKey)
+    set cspApp = ##class(HS.Util.RESTCSPConfig).URLIndexOpen(tFHIRApp)
     set cspApp.ServiceConfigName = "HS.FHIRServer.Interop.Service"
     set st = cspApp.%Save()
     if $$$ISERR(st) {
