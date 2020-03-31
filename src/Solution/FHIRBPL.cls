@@ -49,7 +49,7 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 </code>
 <if name='Check O2 Levels' condition='context.O2Sat &lt; 90' xpos='200' ypos='450' xend='200' yend='800' >
 <true>
-<transform name='Trasform to send' class='Solution.FHIRObosSIUS12' source='context' target='context.Schedule' xpos='335' ypos='600' />
+<transform name='Trasform to send' class='Solution.FromFhirObsToSIUS12' source='context' target='context.Schedule' xpos='335' ypos='600' />
 <call name='To Scheduling Service' target='To_Scheduling' async='1' xpos='335' ypos='700' >
 <request type='EnsLib.HL7.Message' >
 <assign property="callrequest" value="context.Schedule" action="set" />

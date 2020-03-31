@@ -1,4 +1,4 @@
-Class Demo.FHIRObosSIUS12 Extends Ens.DataTransformDTL [ DependsOn = (HS.FHIR.vSTU3.Model.Resource.Observation, EnsLib.HL7.Message) ]
+Class Solution.FromFhirObsToSIUS12 Extends Ens.DataTransformDTL [ DependsOn = (HS.FHIR.vSTU3.Model.Resource.Observation, EnsLib.HL7.Message) ]
 {
 
 Parameter IGNOREMISSINGSOURCE = 1;
