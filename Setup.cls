@@ -21,9 +21,7 @@ ClassMethod setUpFHIR() As %Status
    
     Set strategy = ##class(HS.FHIRServer.API.InteractionsStrategy).GetStrategyForEndpoint(tFHIRApp) 
     Set configData = strategy.GetServiceConfigData() 
-    Set configData.DebugMode = 4
-    #; set configData.ServiceConfigName = "HS.FHIRServer.Interop.Service"
-    
+    Set configData.DebugMode = 4   
     do ##class(Demo.FoundationProduction).Start()
     set cspApp = ##class(HS.Util.RESTCSPConfig).URLIndexOpen(tFHIRApp)
     set cspApp.ServiceConfigName = "HS.FHIRServer.Interop.Service"
