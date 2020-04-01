@@ -22,21 +22,17 @@
 <br>
 <label for="password"> Password: </label>
 <br>
-<input type="password" id="password" value="demo">
+<input type="text" id="password" value="demo">
 <br>
 <br>
-<label for="host"> Host: </label>
+<label for="serverDetails"> Server Details (if you are using a docker container enter "[ip address]:[webserver port]"): </label>
 <br>
-<input type="text" value="localhost" id="host">
-<br>
-<label for="port" > Port: </label>
-<br>
-<input type="text" value="80" id="port">
-<br>
+<input type="text" style="width:400px" placeholder="enter server details. For learning labs, use 'Atelier Server Address'" id="host">
+
 <br>
 <label for="basepath" > Base FHIR Path</label>
 <br>
-<input type="text" value="/csp/healthshare/r4fhirnamespace/fhir/r4/Observation" id="basepath">
+<input type="text" style="width:400px" value="/csp/healthshare/r4fhirnamespace/fhir/r4/Observation" id="basepath">
 <br>
 <br>
 <button type="button" id="sendButton" onclick="sendToServer()">Send</button>
@@ -63,12 +59,11 @@
         var slider = document.getElementById("myRange");
         var value = parseInt(slider.value)
         var host = document.getElementById("host").value
-        var port = document.getElementById("port").value
         var path = document.getElementById("basepath").value
         var username = document.getElementById("username").value
         var password = document.getElementById("password").value
         var a64 = btoa(`${username}:${password}`)
-        var url = `http://${host}:${port}${path}`
+        var url = `https://${host}${path}`
         payload ={
             "resourceType": "Observation",
             "meta": {
@@ -176,7 +171,7 @@
             "body": JSON.stringify(payload)
         }).then((Response)=> {
             if (Response.status == 201) {
-                alert("Your FHIR Resource arrived successfully")
+                alert("Your FHIR Resource arrived successfully. Reponse Status: "+ Response.status)
             }
             else {
                 alert("Something went wrong. Reponse Status: " + Response.status)
