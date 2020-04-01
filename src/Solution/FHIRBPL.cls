@@ -27,8 +27,7 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 <code name='Get O2 Data' xpos='200' ypos='350' >
 <![CDATA[
 
-  // only read the FHIR data if the Resource is and Observation and the request is a create
-  // operation
+  // only read the FHIR data if the Resource is an Observation and the request method is POST
   if ((request.Request.RequestMethod="POST") & (request.Request.RequestPath="Observation")){
 
 
@@ -38,7 +37,7 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
     set stream = ##class(HS.SDA3.QuickStream).%OpenId(request.QuickStreamId)
 
     // read that stream into a Dynamic object, which can represent
-    // Json data
+    // JSON data
     set Json = ##class(%DynamicObject).%FromJSON(stream)
 
     // access the oxygen saturation value and place it in a local 

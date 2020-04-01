@@ -8,10 +8,10 @@
 <form>
 <h2> Select An O2 Saturation Level</h2>
 
-<label for="points">Points (between 80 and 100): </label>
+<label for="points">Points (between 80% and 100%): </label>
 <input type="range" id="myRange" name="points" min="80" max="100">
 <br>
-<p>Value <span id="output"></span></p>
+<p>Value <span id="output"></span>%</p>
 <br>
 <br>
 <br>
@@ -40,7 +40,6 @@
 
 
 </form>
-  
 </body>
 
 
@@ -51,9 +50,9 @@
 
     // Update the current slider value (each time you drag the slider handle)
     slider.oninput = function() {
-    output.innerHTML = this.value;
+        output.innerHTML = this.value;
     }
-
+    
     function sendToServer(){
 
         var slider = document.getElementById("myRange");
@@ -64,7 +63,27 @@
         var password = document.getElementById("password").value
         var a64 = btoa(`${username}:${password}`)
         var url = `https://${host}${path}`
-        payload ={
+        payload.valueQuantity.value = value
+        fetch(url, {
+            method: "POST",
+            headers:{
+            "Content-Type": "application/fhir+json;charset=utf-8",
+            "Accept":"application/fhir+json",
+            "Authorization" : `Basic ${a64}`
+            },
+            "body": JSON.stringify(payload)
+        }).then((Response)=> {
+            if (Response.status == 201) {
+                alert("Your FHIR Resource arrived successfully. Reponse Status: " + Response.status)
+            }
+            else {
+                alert("Something went wrong. Reponse Status: " + Response.status)
+            }
+        }).catch((e)=>{
+            alert("Something went wrong: " + e)
+        })
+    }
+    var payload ={
             "resourceType": "Observation",
             "meta": {
                 "profile": [
@@ -123,7 +142,7 @@
             },
             "effectiveDateTime": "2014-12-05T09:30:10+01:00",
             "valueQuantity": {
-                "value": value,
+                "value": "100",
                 "unit": "%",
                 "system": "http://unitsofmeasure.org",
                 "code": "%"
@@ -160,24 +179,5 @@
                 }
             ]
             }
-        
-        fetch(url, {
-            method: "POST",
-            headers:{
-            "Content-Type": "application/fhir+json;charset=utf-8",
-            "Accept":"application/fhir+json",
-            "Authorization" : `Basic ${a64}`
-            },
-            "body": JSON.stringify(payload)
-        }).then((Response)=> {
-            if (Response.status == 201) {
-                alert("Your FHIR Resource arrived successfully. Reponse Status: "+ Response.status)
-            }
-            else {
-                alert("Something went wrong. Reponse Status: " + Response.status)
-            }
-        }).catch((e)=>{
-            alert("Something went wrong: " + e)
-        })
-    }
+
 </script>
