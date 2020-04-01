@@ -1,7 +1,7 @@
 class Setup {
 
-/// creates an R4 FHIR Server and foundation namespace and directs incoming FHIR requests
-/// to an interoperability production
+/// Creates an R4 FHIR Server and foundation namespace and directs incoming FHIR requests
+/// To an interoperability production
 ClassMethod setUpFHIR() As %Status
 {   
     set $namespace = "HSLIB"
@@ -9,7 +9,7 @@ ClassMethod setUpFHIR() As %Status
     set status = ##class(HS.HC.Util.Installer).InstallFoundation("R4FHIRNamespace")
     $$$ThrowOnError(status)
 
-    // switch to newly created namespace
+    // Switch to newly created namespace
     set $namespace = "R4FHIRNamespace"
     do $system.OBJ.LoadDir(baseDir _ "src/Demo/]", "ck")
     do $system.OBJ.LoadDir(baseDir_ "src/Solution/", "ck")
@@ -17,7 +17,7 @@ ClassMethod setUpFHIR() As %Status
     // Install elements that are required for a FHIR-enabled namespace
     do ##class(HS.FHIRServer.Installer).InstallNamespace()
 
-    // declare installation configuration variables
+    // Declare installation configuration variables
     set tFHIRApp = "/csp/healthshare/r4fhirnamespace/fhir/r4"
     set tStrategyClass = "HS.FHIRServer.Storage.Json.InteractionsStrategy"
     set tMetadataConfigKey = "HL7v40"
@@ -43,6 +43,8 @@ ClassMethod setUpFHIR() As %Status
     return status
 }
 
+/// Creates an R4 FHIR Server and foundation namespace and directs incoming FHIR requests
+/// To an interoperability production. This method is specific to the online learning lab
 ClassMethod setUpLearningLab() as %Status 
 {
     set $namespace = "HSLIB"
@@ -51,7 +53,7 @@ ClassMethod setUpLearningLab() as %Status
     set status = ##class(HS.HC.Util.Installer).InstallFoundation("R4FHIRNamespace")
     $$$ThrowOnError(status)
 
-    // switch to newly created namespace
+    // Switch to newly created namespace
     set $namespace = "R4FHIRNamespace"
     do $system.OBJ.LoadDir(baseDir _ "src/Demo/", "ck")
     do $system.OBJ.LoadDir(baseDir _ "src/Solution/", "ck")
@@ -62,7 +64,7 @@ ClassMethod setUpLearningLab() as %Status
         // Install elements that are required for a FHIR-enabled namespace
     do ##class(HS.FHIRServer.Installer).InstallNamespace()
 
-    // declare installation configuration variables
+    // Declare installation configuration variables
     set tFHIRApp = "/csp/healthshare/r4fhirnamespace/fhir/r4"
     set tStrategyClass = "HS.FHIRServer.Storage.Json.InteractionsStrategy"
     set tMetadataConfigKey = "HL7v40"
