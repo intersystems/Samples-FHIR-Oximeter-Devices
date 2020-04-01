@@ -16,7 +16,7 @@ XData ProductionDefinition
   <Item Name="HS.FHIRServer.Interop.Operation" Category="" ClassName="HS.FHIRServer.Interop.Operation" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
   </Item>
   <Item Name="To_Scheduling" Category="" ClassName="EnsLib.HL7.Operation.FileOperation" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
-    <Setting Target="Adapter" Name="FilePath">/datavol/Out/</Setting>
+    <Setting Target="Adapter" Name="FilePath">/home/project/shared/Samples-FHIR-Oximeter-Devices/Out/</Setting>
     <Setting Target="Host" Name="Filename">%f_%Q%!+(_a)</Setting>
   </Item>
 </Production>
