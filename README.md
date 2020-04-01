@@ -1,3 +1,3 @@
-# Samples-FHIR-Oximeter-Devices
+# Oxygen Saturation in Infants
 
-Instructions for the *[Samples-FHIR-Oximeter-Devices](#)* are available on GettingStartedHealth.InterSystems.com.
+Instructions for the *[Oxygen Saturation in Infants](#)* exercise are available on GettingStartedHealth.InterSystems.com.
