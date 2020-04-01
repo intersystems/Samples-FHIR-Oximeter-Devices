@@ -7,7 +7,8 @@ ClassMethod setUpFHIR() As %Status
     zn "HSLIB"
     set status = ##class(HS.HC.Util.Installer).InstallFoundation("R4FHIRNamespace")
     set $namespace = "R4FHIRNamespace"
-    do $system.OBJ.LoadDir(baseDir _"src/Demo/", "ck")
+    do $system.OBJ.LoadDir(baseDir _"src/Demo/]", "ck")
+    do $system.OBJ.LoadDir(baseDir_"src/Solution/", "ck")
     Set tFHIRApp = "/csp/healthshare/r4fhirnamespace/fhir/r4"
     Set tStrategyClass = "HS.FHIRServer.Storage.Json.InteractionsStrategy"
     Set tMetadataConfigKey = "HL7v40"

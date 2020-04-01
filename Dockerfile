@@ -10,7 +10,7 @@ USER irisowner
 
 WORKDIR /opt/app
 
-COPY ./Installer.cls ./
+
 COPY ./Setup.cls ./
 COPY ./src ./src/
 
