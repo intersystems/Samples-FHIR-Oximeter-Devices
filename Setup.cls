@@ -1,70 +1,91 @@
 class Setup {
 
+/// creates an R4 FHIR Server and foundation namespace and directs incoming FHIR requests
+/// to an interoperability production
 ClassMethod setUpFHIR() As %Status
 {   
-
+    set $namespace = "HSLIB"
     set baseDir = "/opt/app/"
-    zn "HSLIB"
     set status = ##class(HS.HC.Util.Installer).InstallFoundation("R4FHIRNamespace")
+    $$$ThrowOnError(status)
+
+    // switch to newly created namespace
     set $namespace = "R4FHIRNamespace"
-    do $system.OBJ.LoadDir(baseDir _"src/Demo/", "ck")
-    Set tFHIRApp = "/csp/healthshare/r4fhirnamespace/fhir/r4"
-    Set tStrategyClass = "HS.FHIRServer.Storage.Json.InteractionsStrategy"
-    Set tMetadataConfigKey = "HL7v40"
+    do $system.OBJ.LoadDir(baseDir _ "src/Demo/]", "ck")
+    do $system.OBJ.LoadDir(baseDir_ "src/Solution/", "ck")
 
     // Install elements that are required for a FHIR-enabled namespace
-    Do ##class(HS.FHIRServer.Installer).InstallNamespace()
+    do ##class(HS.FHIRServer.Installer).InstallNamespace()
+
+    // declare installation configuration variables
+    set tFHIRApp = "/csp/healthshare/r4fhirnamespace/fhir/r4"
+    set tStrategyClass = "HS.FHIRServer.Storage.Json.InteractionsStrategy"
+    set tMetadataConfigKey = "HL7v40"
 
     // Install an instance of a FHIR Service into the current namespace
-    Do ##class(HS.FHIRServer.Installer).InstallInstance(tFHIRApp, tStrategyClass, tMetadataConfigKey,"",0)
+    do ##class(HS.FHIRServer.Installer).InstallInstance(tFHIRApp, tStrategyClass, tMetadataConfigKey,"",0)
 
-   
-    Set strategy = ##class(HS.FHIRServer.API.InteractionsStrategy).GetStrategyForEndpoint(tFHIRApp) 
-    Set configData = strategy.GetServiceConfigData() 
-    Set configData.DebugMode = 4
-    #; set configData.ServiceConfigName = "HS.FHIRServer.Interop.Service"
+    // Configure FHIR app
+    set strategy = ##class(HS.FHIRServer.API.InteractionsStrategy).GetStrategyForEndpoint(tFHIRApp) 
+    set configData = strategy.GetServiceConfigData() 
+    set configData.DebugMode = 4   
+
     
-    do ##class(Demo.FoundationProduction).Start()
     set cspApp = ##class(HS.Util.RESTCSPConfig).URLIndexOpen(tFHIRApp)
     set cspApp.ServiceConfigName = "HS.FHIRServer.Interop.Service"
-    set st = cspApp.%Save()
-    if $$$ISERR(st) {
-        write "something went wrong"
-    }
-    Do strategy.SaveServiceConfigData(configData)
-    return st
+
+    set status = cspApp.%Save()
+    $$$ThrowOnError(status)
+
+    do strategy.SaveServiceConfigData(configData)
+
+    set status = ##class(Demo.FoundationProduction).Start()
+    return status
 }
 
 ClassMethod setUpLearningLab() as %Status 
 {
+    set $namespace = "HSLIB"
     set baseDir = "/home/project/shared/Samples-FHIR-Oximeter-Devices/"
-    zn "HSLIB"
-    set status = ##class(HS.HC.Util.Installer).InstallFoundation("R4FHIRNamespace")
-    set $namespace = "R4FHIRNamespace"
-    do $system.OBJ.LoadDir(baseDir_"src/Demo/", "ck")
-    Set tFHIRApp = "/csp/healthshare/r4fhirnamespace/fhir/r4"
-    Set tStrategyClass = "HS.FHIRServer.Storage.Json.InteractionsStrategy"
-    Set tMetadataConfigKey = "HL7v40"
 
-    // Install elements that are required for a FHIR-enabled namespace
-    Do ##class(HS.FHIRServer.Installer).InstallNamespace()
+    set status = ##class(HS.HC.Util.Installer).InstallFoundation("R4FHIRNamespace")
+    $$$ThrowOnError(status)
+
+    // switch to newly created namespace
+    set $namespace = "R4FHIRNamespace"
+    do $system.OBJ.LoadDir(baseDir _ "src/Demo/", "ck")
+    do $system.OBJ.LoadDir(baseDir _ "src/Solution/", "ck")
+    set tFHIRApp = "/csp/healthshare/r4fhirnamespace/fhir/r4"
+    set tStrategyClass = "HS.FHIRServer.Storage.Json.InteractionsStrategy"
+    set tMetadataConfigKey = "HL7v40"
+
+        // Install elements that are required for a FHIR-enabled namespace
+    do ##class(HS.FHIRServer.Installer).InstallNamespace()
+
+    // declare installation configuration variables
+    set tFHIRApp = "/csp/healthshare/r4fhirnamespace/fhir/r4"
+    set tStrategyClass = "HS.FHIRServer.Storage.Json.InteractionsStrategy"
+    set tMetadataConfigKey = "HL7v40"
 
     // Install an instance of a FHIR Service into the current namespace
-    Do ##class(HS.FHIRServer.Installer).InstallInstance(tFHIRApp, tStrategyClass, tMetadataConfigKey,"",0)
+    do ##class(HS.FHIRServer.Installer).InstallInstance(tFHIRApp, tStrategyClass, tMetadataConfigKey,"",0)
 
-    Set strategy = ##class(HS.FHIRServer.API.InteractionsStrategy).GetStrategyForEndpoint(tFHIRApp) 
-    Set configData = strategy.GetServiceConfigData() 
-    Set configData.DebugMode = 4
+    // Configure FHIR app
+    set strategy = ##class(HS.FHIRServer.API.InteractionsStrategy).GetStrategyForEndpoint(tFHIRApp) 
+    set configData = strategy.GetServiceConfigData() 
+    set configData.DebugMode = 4   
+
     
-    do ##class(Demo.FoundationProduction).Start()
     set cspApp = ##class(HS.Util.RESTCSPConfig).URLIndexOpen(tFHIRApp)
     set cspApp.ServiceConfigName = "HS.FHIRServer.Interop.Service"
-    set st = cspApp.%Save()
-    if $$$ISERR(st) {
-        write "something went wrong"
-    }
-    Do strategy.SaveServiceConfigData(configData)
-    return st
+
+    set status = cspApp.%Save()
+    $$$ThrowOnError(status)
+
+    do strategy.SaveServiceConfigData(configData)
+
+    set status = ##class(Demo.FoundationProduction).Start()
+    return status
 }
 
 }

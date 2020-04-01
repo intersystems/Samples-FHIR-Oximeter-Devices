@@ -8,10 +8,10 @@
 <form>
 <h2> Select An O2 Saturation Level</h2>
 
-<label for="points">Points (between 80 and 100): </label>
+<label for="points">Points (between 80% and 100%): </label>
 <input type="range" id="myRange" name="points" min="80" max="100">
 <br>
-<p>Value <span id="output"></span></p>
+<p>Value <span id="output"></span>%</p>
 <br>
 <br>
 <br>
@@ -22,21 +22,17 @@
 <br>
 <label for="password"> Password: </label>
 <br>
-<input type="password" id="password" value="demo">
+<input type="text" id="password" value="demo">
 <br>
 <br>
-<label for="host"> Host: </label>
+<label for="serverDetails"> Server Details (if you are using a docker container enter "[ip address]:[webserver port]"): </label>
 <br>
-<input type="text" value="localhost" id="host">
-<br>
-<label for="port" > Port: </label>
-<br>
-<input type="text" value="80" id="port">
-<br>
+<input type="text" style="width:400px" placeholder="enter server details. For learning labs, use 'Atelier Server Address'" id="host">
+
 <br>
 <label for="basepath" > Base FHIR Path</label>
 <br>
-<input type="text" value="/csp/healthshare/fhirnamespace/fhir/r4/Observation" id="basepath">
+<input type="text" style="width:400px" value="/csp/healthshare/r4fhirnamespace/fhir/r4/Observation" id="basepath">
 <br>
 <br>
 <button type="button" id="sendButton" onclick="sendToServer()">Send</button>
@@ -44,7 +40,6 @@
 
 
 </form>
-  
 </body>
 
 
@@ -55,21 +50,40 @@
 
     // Update the current slider value (each time you drag the slider handle)
     slider.oninput = function() {
-    output.innerHTML = this.value;
+        output.innerHTML = this.value;
     }
-
+    
     function sendToServer(){
 
         var slider = document.getElementById("myRange");
         var value = parseInt(slider.value)
         var host = document.getElementById("host").value
-        var port = document.getElementById("port").value
         var path = document.getElementById("basepath").value
         var username = document.getElementById("username").value
         var password = document.getElementById("password").value
         var a64 = btoa(`${username}:${password}`)
-        var url = `http://${host}:${port}${path}`
-        payload ={
+        var url = `https://${host}${path}`
+        payload.valueQuantity.value = value
+        fetch(url, {
+            method: "POST",
+            headers:{
+            "Content-Type": "application/fhir+json;charset=utf-8",
+            "Accept":"application/fhir+json",
+            "Authorization" : `Basic ${a64}`
+            },
+            "body": JSON.stringify(payload)
+        }).then((Response)=> {
+            if (Response.status == 201) {
+                alert("Your FHIR Resource arrived successfully. Reponse Status: " + Response.status)
+            }
+            else {
+                alert("Something went wrong. Reponse Status: " + Response.status)
+            }
+        }).catch((e)=>{
+            alert("Something went wrong: " + e)
+        })
+    }
+    var payload ={
             "resourceType": "Observation",
             "meta": {
                 "profile": [
@@ -128,7 +142,7 @@
             },
             "effectiveDateTime": "2014-12-05T09:30:10+01:00",
             "valueQuantity": {
-                "value": value,
+                "value": "100",
                 "unit": "%",
                 "system": "http://unitsofmeasure.org",
                 "code": "%"
@@ -165,24 +179,5 @@
                 }
             ]
             }
-        
-        fetch(url, {
-            method: "POST",
-            headers:{
-            "Content-Type": "application/fhir+json;charset=utf-8",
-            "Accept":"application/fhir+json",
-            "Authorization" : `Basic ${a64}`
-            },
-            "body": JSON.stringify(payload)
-        }).then((Response)=> {
-            if (Response.status == 201) {
-                alert("Your FHIR Resource arrived successfully")
-            }
-            else {
-                alert("Something went wrong. Reponse Status: " + Response.status)
-            }
-        }).catch((e)=>{
-            alert("Something went wrong: " + e)
-        })
-    }
+
 </script>
