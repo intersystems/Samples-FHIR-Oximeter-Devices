@@ -22,7 +22,7 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 <code name='Get O2 Data' xpos='200' ypos='350' >
 <![CDATA[
 
-  // Only read the FHIR data if the Resource is an Observation and the request method is POST
+  // Process the FHIR data if the request method is POST and the Resource is an Observation
   if (request.Request.RequestMethod="POST") && (request.Request.RequestPath="Observation"){
 
 
