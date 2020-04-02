@@ -11,7 +11,7 @@ ClassMethod setUpFHIR() As %Status
 
     // Switch to newly created namespace
     set $namespace = "R4FHIRNamespace"
-    do $system.OBJ.LoadDir(baseDir _ "src/Demo/]", "ck")
+    do $system.OBJ.LoadDir(baseDir _ "src/Demo/", "ck")
     do $system.OBJ.LoadDir(baseDir_ "src/Solution/", "ck")
 
     // Install elements that are required for a FHIR-enabled namespace

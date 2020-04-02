@@ -1,4 +1,4 @@
-FROM docker.iscinternal.com/intersystems/irishealth-community:2020.1.0-latest
+FROM store/intersystems/irishealth-community:2020.1.0.215.0
 
 USER root
 # https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=ADOCK_iris_iscmain
@@ -33,5 +33,5 @@ RUN iris start $ISC_PACKAGE_INSTANCENAME quietly EmergencyId=sys,sys && \
     /bin/echo -e "sys\nsys\n" \
     | iris stop $ISC_PACKAGE_INSTANCENAME quietly
 
-WORKDIR /datavol
+
 CMD [ "-l", "/usr/irissys/mgr/messages.log" ]

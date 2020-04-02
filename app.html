@@ -34,10 +34,12 @@
 <br>
 <input type="text" style="width:400px" value="/csp/healthshare/r4fhirnamespace/fhir/r4/Observation" id="basepath">
 <br>
+<input type="checkbox" checked id="ssl">Send over SSL (uncheck this if you are using a docker container)</input>
+<br>
 <br>
 <button type="button" id="sendButton" onclick="sendToServer()">Send</button>
 <br>
-
+<br>
 
 </form>
 </body>
@@ -62,7 +64,14 @@
         var username = document.getElementById("username").value
         var password = document.getElementById("password").value
         var a64 = btoa(`${username}:${password}`)
-        var url = `https://${host}${path}`
+        var ssl = document.getElementById("ssl").checked
+        var prot = "http"
+        if (ssl) {
+            prot = "https"
+            
+        }
+
+        var url = `${prot}://${host}${path}`
         payload.valueQuantity.value = value
         fetch(url, {
             method: "POST",
