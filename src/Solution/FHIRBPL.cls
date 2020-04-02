@@ -2,7 +2,6 @@
 Class Solution.FHIRBPL Extends Ens.BusinessProcessBPL
 {
 
-
 /// BPL Definition
 XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 {
@@ -24,21 +23,21 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 <![CDATA[
 
   // Only read the FHIR data if the Resource is an Observation and the request method is POST
-  if ((request.Request.RequestMethod="POST") & (request.Request.RequestPath="Observation")){
+  if (request.Request.RequestMethod="POST") && (request.Request.RequestPath="Observation"){
 
 
     // FHIR data comes in as a Quickstream object, which is like a BLOB
     // It must be read into a string before it can be handled
     // Start by opening the Quickstream object whose ID is part of the request.
-    set stream = ##class(HS.SDA3.QuickStream).%OpenId(request.QuickStreamId)
+    set quickStream = ##class(HS.SDA3.QuickStream).%OpenId(request.QuickStreamId)
 
     // Read that stream into a Dynamic object, which can represent
     // JSON data
-    set Json = ##class(%DynamicObject).%FromJSON(stream)
+    set Observation = ##class(%DynamicObject).%FromJSON(quickStream)
 
     // Access the oxygen saturation value and place it in a local 
     // Context variable.
-    set context.O2Sat = Json.valueQuantity.value
+    set context.O2Sat = Observation.valueQuantity.value
    
  }]]>
 </code>
@@ -54,6 +53,11 @@ XData BPL [ XMLNamespace = "http://www.intersystems.com/bpl" ]
 </if>
 </sequence>
 </process>
+}
+
+Storage Default
+{
+<Type>%Storage.Persistent</Type>
 }
 
 }
