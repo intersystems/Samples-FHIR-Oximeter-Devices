@@ -8,3 +8,4 @@ services:
       - "51773:51773"
     volumes:
       - "./:/home/project/shared/Samples-FHIR-Oximeter-Devices/"
+    hostname: iris-sample
