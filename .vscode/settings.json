@@ -1,0 +1,36 @@
+{
+    "files.associations": {
+    
+        "Dockerfile*": "dockerfile",
+        "iris.script": "objectscript"
+      },
+    "objectscript.conn" :{
+      "ns": "R4FHIRNamespace",
+      "username":"_SYSTEM",
+      "password": "SYS",
+      "docker-compose": {
+        "service": "iris",
+        "internalPort": 52773
+      },
+      "links": {
+        "Production": "http://localhost:${port}/csp/healthshare/r4fhirnamespace/EnsPortal.ProductionConfig.zen"
+        
+    }
+    },  
+    "sqltools.connections": [
+      {
+        "namespace": "IRISAPP",
+        "connectionMethod": "Server and Port",
+        "showSystem": false,
+        "previewLimit": 50,
+        "server": "localhost",
+        "port": 32770,
+        "askForPassword": false,
+        "driver": "InterSystems IRIS",
+        "name": "objectscript-docker",
+        "username": "_SYSTEM",
+        "password": "SYS"
+      }
+    ]
+
+}
