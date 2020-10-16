@@ -1,0 +1,15 @@
+; run installer to create namespace
+do $SYSTEM.OBJ.Load("/opt/app/Setup.cls", "ck")
+set sc = ##class(App.Installer).setup() 
+
+zn "%SYS"
+Do ##class(Security.Users).UnExpireUserPasswords("*")
+Do ##class(Security.Users).AddRoles("admin", "%ALL")
+Do ##class(Security.System).Get(,.p)
+Set p("AutheEnabled")=$zboolean(p("AutheEnabled"),16,7)
+Do ##class(Security.System).Modify(,.p)
+do $system.OBJ.Load("/opt/app/Setup.cls", "ck")
+set sc = ##class(Setup).setUpFHIR()
+
+; call your initial methods here
+halt
