@@ -1,4 +1,4 @@
-Class Solution.FromFhirObsToSIUS12 Extends Ens.DataTransformDTL [ DependsOn = (HS.FHIRServer.Storage.Json.Resource, EnsLib.HL7.Message) ]
+Class Demo.FromFhirObsToSIUS12 Extends Ens.DataTransformDTL [ DependsOn = (HS.FHIRServer.Storage.Json.Resource, EnsLib.HL7.Message) ]
 {
 
 Parameter IGNOREMISSINGSOURCE = 1;
