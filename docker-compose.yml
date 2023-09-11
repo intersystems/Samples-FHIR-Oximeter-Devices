@@ -2,9 +2,9 @@ version: '3'
 services:
   iris:
     build: .
-
+    command: --ISCAgent false
     ports:
-      - "52775:52773"
+      - "52775:1972"
       - "51773:51773"
     volumes:
       - "./:/home/project/shared/Samples-FHIR-Oximeter-Devices/"
